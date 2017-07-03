@@ -42,7 +42,7 @@ if (sourceObject is var newObject) //always resolves "true" and projects source 
 Notice that if source Object is null, `.GetType` would throw a `NullReferenceException`, that you could avoid using null conditional operator `?`, introduced in C# 6.
 
 ```
-newObject.GetType().Name //without null conditinal would throw NullReferenceException if source object "o" is null
+newObject.GetType().Name //without null conditinal would throw NullReferenceException if source object is null
 newObject?.GetType()?.Name //with null conditional operator
 ```
 
