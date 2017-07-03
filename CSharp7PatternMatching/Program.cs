@@ -42,7 +42,7 @@ namespace CSharp7PatternMatching
                         Console.WriteLine($"Type pattern: rectangle.Width {rectangle.Width} x rectangle.Height {rectangle.Height} Rectangle");
                         break;
                     case null:
-                        Console.WriteLine("null is a constant pattern");
+                        Console.WriteLine("Constant pattern: null is a constant pattern as int and other value types");
                         break;
                     default:
                         Console.WriteLine("type unknown");
@@ -50,8 +50,27 @@ namespace CSharp7PatternMatching
                 }//switch
 
             }//foreach
+
+
+            //set o1 into someobject within an if expression
+            object o1 = new Foo { MyProperty = 1 };
+            if (o1 is var someObject)
+                Console.WriteLine($"Var pattern: o1 is not null and a var pattern was set with underlying type {someObject?.GetType()?.Name}. Member value: {(someObject as Foo)?.MyProperty}");
+
+            //set o2 into someobject within an if expression
+            object o2 = null;
+            if (o2 is var someObject2)
+                Console.WriteLine($"Var pattern: o2 is null and a var pattern cannot be set. There is no underlying type: {someObject2?.GetType()?.Name}");
+
+
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
+        }
+
+        class Foo
+        {
+
+            public int MyProperty { get; set; }
         }
     }
 }
