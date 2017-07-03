@@ -31,10 +31,13 @@ if (o is 444) //you are checking if o corresponds constant integer 444, you coul
 ```
 
 ### Variable pattern
-If object is not null, a variable is declared and set with object value. You could figure object type using the following:
+
+If a source object is not null, you can project its value/reference into a new object (declared with `var`) within an `if` statement.
+
+Also the new object's type will have the underlying type from the original object. So, you could figure new object type using GetType():
 ```
-if (o is var someObject) //you are checking if o is of type null, but you could stick with ==
-	Console.WriteLine($"it's a var pattern with the type {someObject?.GetType()?.Name}");
+if (originalObject is var newObject) //project object (whether it's null or not) to a new object
+	Console.WriteLine($"it's a var pattern with the type {someObject?.GetType()?.Name}"); //if object is not null, you can check its type
 ```
 In case o is null, .GetType would throw a NullReferenceException, that you could avoid using null conditional operator "?", introduced in C# 6.
 
@@ -85,6 +88,17 @@ foreach (object o in shapes) {
 	}//switch
 
 }//foreach
+
+//set o1 into someobject within an if expression
+object o1 = new Foo { MyProperty = 1 };
+if (o1 is var someObject)
+	Console.WriteLine($"Var pattern: o1 is not null and a var pattern was set with underlying type {someObject?.GetType()?.Name}. Member value: {(someObject as Foo)?.MyProperty}");
+
+//set o2 into someobject within an if expression
+object o2 = null;
+if (o2 is var someObject2)
+	Console.WriteLine($"Var pattern: o2 is null and a var pattern cannot be set. There is no underlying type: {someObject2?.GetType()?.Name}");
+
 Console.WriteLine("\nPress any key to continue...");
 Console.ReadKey();
 ```
