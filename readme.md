@@ -34,16 +34,16 @@ if (o is 444) //you are checking if o corresponds constant integer 444, you coul
 
 If a source object is not null, you can project its value/reference into a new object (declared with `var`) within an `if` statement.
 
-Also the new object's type will have the underlying type from the original object. So, you could figure new object type using GetType():
+Also the new object's type will have the underlying type from the original object. So, you could figure new object type using `GetType()`:
 ```
-if (originalObject is var newObject) //project object (whether it's null or not) to a new object
-	Console.WriteLine($"it's a var pattern with the type {someObject?.GetType()?.Name}"); //if object is not null, you can check its type
+if (sourceObject is var newObject) //project object (whether it's null or not) to a new object
+	Console.WriteLine($"it's a var pattern with the type {newObject?.GetType()?.Name}"); //if object is not null, you can check its type
 ```
-In case o is null, .GetType would throw a NullReferenceException, that you could avoid using null conditional operator "?", introduced in C# 6.
+Notice that if source Object is null, `.GetType` would throw a `NullReferenceException`, that you could avoid using null conditional operator `?`, introduced in C# 6.
 
 ```
-someObject.GetType().Name //without null conditinal would throw NullReferenceException if source object "o" is null
-someObject?.GetType()?.Name //with null conditional operator
+newObject.GetType().Name //without null conditinal would throw NullReferenceException if source object "o" is null
+newObject?.GetType()?.Name //with null conditional operator
 ```
 
 ### Get me to the sample
