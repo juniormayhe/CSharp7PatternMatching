@@ -32,11 +32,11 @@ if (o is 444) //you are checking if o corresponds constant integer 444, you coul
 
 ### Variable pattern
 
-If a source object is not null, you can project its value/reference into a new object (declared with `var`) within an `if` statement.
+If a source object is not null, you can project its value/reference into a new object (declared with `var`) within an expression.
 
 Also the new object's type will have the underlying type from the original object. So, you could figure new object type using `GetType()`:
 ```
-if (sourceObject is var newObject) //project object (whether it's null or not) to a new object
+if (sourceObject is var newObject) //always resolves "true" and projects source object (whether it's null or not) to a new object
 	Console.WriteLine($"it's a var pattern with the type {newObject?.GetType()?.Name}"); //if object is not null, you can check its type
 ```
 Notice that if source Object is null, `.GetType` would throw a `NullReferenceException`, that you could avoid using null conditional operator `?`, introduced in C# 6.
@@ -44,6 +44,32 @@ Notice that if source Object is null, `.GetType` would throw a `NullReferenceExc
 ```
 newObject.GetType().Name //without null conditinal would throw NullReferenceException if source object "o" is null
 newObject?.GetType()?.Name //with null conditional operator
+```
+
+When to use var pattern? There are some rare cases you would use such as avoiding multiple calls to high load or expensive methods.
+
+```
+//bad code: it is evaluating twice an expensive method call
+while(sourceObject.ExpensiveMethod() != null)
+  result = sourceObject.ExpensiveMethod();
+```
+
+
+```
+//better approach: it is evaluating an expensive method call just ONE time with inline assignment into a temp variable
+Foo temp;
+while(temp = sourceObject.ExpensiveMethod() != null)
+  result = temp;
+
+//another better approach: the same as previous code but using var pattern matching
+//expensive method output is projected into temp variable and we loop until temp is null
+while(sourceObject.ExpensiveMethod() is var temp && temp != null)
+  result = temp;
+  
+//if it's possible, it's better for reading to test result of an expensive method using Type pattern
+//expensive method output is projected into a temp variable of type Foo ONLY IF output was NOT NULL!
+while(sourceObject.ExpensiveMethod() is Foo temp)
+  result = temp;
 ```
 
 ### Get me to the sample
